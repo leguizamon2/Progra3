@@ -31,8 +31,8 @@ public class GrafoLD implements GrafoTDA {
 		int i = 0;
 		while(conjuntos.size() > 1) 
 		{
-			AristaKruskal ak = aristas.get(i);
-			aristas.remove(i);
+			AristaKruskal ak = aristas.get(0);
+			aristas.remove(0);
 			if(PertenecenADistintosConjuntos(ak.NodoOrigen, ak.NodoDestino, conjuntos)) 
 			{
 				kruskal.AgregarVertice(ak.NodoOrigen);

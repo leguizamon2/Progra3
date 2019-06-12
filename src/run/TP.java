@@ -43,6 +43,6 @@ public class TP {
 		grafo2.AgregarArista(5, 3, 6);
 		grafo2.AgregarArista(6, 3, 4);
 	
-		grafo2.Kruskal().ImprimirLindo(1);
+		grafo2.Kruskal().mostrarMatriz();
 	}
 }
