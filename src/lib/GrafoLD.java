@@ -28,11 +28,11 @@ public class GrafoLD implements GrafoTDA {
 			conjuntos.add(c);
 		}
 		
-		
+		int i = 0;
 		while(conjuntos.size() > 1) 
 		{
-			AristaKruskal ak = aristas.get(0);
-			aristas.remove(0);
+			AristaKruskal ak = aristas.get(i);
+			aristas.remove(i);
 			if(PertenecenADistintosConjuntos(ak.NodoOrigen, ak.NodoDestino, conjuntos)) 
 			{
 				kruskal.AgregarVertice(ak.NodoOrigen);
@@ -40,12 +40,38 @@ public class GrafoLD implements GrafoTDA {
 				kruskal.AgregarArista(ak.NodoOrigen, ak.NodoDestino, ak.ValorArista);
 				
 				ArrayList<ConjuntoTDA> conjuntosAux = new ArrayList<ConjuntoTDA>();
-				conjuntos.forEach((n)->{
-					if(n.Pertenece(ak.NodoOrigen))
-						n.Agregar(ak.NodoDestino);
-						
-				});
+				
+				ConjuntoTDA aux1 = new ConjuntoLD();
+				ConjuntoTDA aux2 = new ConjuntoLD();
+								
+				for (ConjuntoTDA conjuntoTDA : conjuntos)//Recorro el conjunto para mergear el origen y destino y dejar afuera el destino 
+				{
+					if(conjuntoTDA.Pertenece(ak.NodoOrigen))
+					{
+						aux1 = conjuntoTDA;					
+					}
+					else
+					if(conjuntoTDA.Pertenece(ak.NodoDestino))
+					{
+						aux2 = conjuntoTDA;
+					}
+					else
+					{
+						conjuntosAux.add(conjuntoTDA);	
+					}
+				}
+				
+				while(!aux1.ConjuntoVacio())
+				{
+					int e = aux1.Elegir();
+					aux2.Agregar(e);
+					aux1.Sacar(e);
+				}
+				conjuntosAux.add(aux2);
+				conjuntos = conjuntosAux;
 			}
+			
+			i++;
 		}
 		
 		
@@ -54,6 +80,14 @@ public class GrafoLD implements GrafoTDA {
 	
 	public boolean PertenecenADistintosConjuntos(int a, int b, ArrayList<ConjuntoTDA> conjuntos)
 	{
+		for(int i = 0; i < conjuntos.size(); i++)
+		{
+			if(conjuntos.get(i).Pertenece(a) && conjuntos.get(i).Pertenece(b))
+			{
+				return false;
+			}
+		}
+		
 		return true;
 	}
 	
