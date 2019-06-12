@@ -21,7 +21,7 @@ public class TP {
 		grafo1.AgregarArista(3, 6, 5);
 		grafo1.AgregarArista(3, 7, 6);
 
-		grafo1.ImprimirLindo(1);
+		//grafo1.ImprimirLindo(1);
 		
 		
 		GrafoTDA grafo2 = new GrafoLD();
@@ -42,6 +42,7 @@ public class TP {
 		grafo2.AgregarArista(5, 6, 6);
 		grafo2.AgregarArista(5, 3, 6);
 		grafo2.AgregarArista(6, 3, 4);
-		
+	
+		grafo2.Kruskal();
 	}
 }

@@ -4,7 +4,97 @@ import java.util.*;
 
 public class GrafoLD implements GrafoTDA {
 	NodoGrafo origen;
+	
+	public GrafoTDA Kruskal() 
+	{
+		GrafoTDA kruskal = new GrafoLD();//Creo el grafo que se va a retornar
+		ArrayList<AristaKruskal> aristas = GetAristasKruskal();//Traigo la lista de aristas totales del grafo
+		Collections.sort(aristas);//Ordeno las aristas de menor a mayor.
+		
+//		aristas.forEach((n) ->{
+//			System.out.println(n.NodoOrigen + ", " + n.ValorArista + ", " + n.NodoDestino);
+//		});
+		
+		
+		ArrayList<ConjuntoTDA> conjuntos = new ArrayList<ConjuntoTDA>();// Este array list va a ser mi lista de conuntos
+		//Inicialmente se va a cargar con un nuevo conjunto por cada vertice, que contenga solo un vertice
+		ConjuntoTDA aux = Vertices();//Aca agarro todos los vertices
+		while (!aux.ConjuntoVacio())//voy iterando todos los vertices para crear un conjunto por cada uno y agragarlo al array de conjuntos
+		{
+			ConjuntoTDA c = new ConjuntoLD();
+			c.InicializarConjunto();
+			c.Agregar(aux.Elegir());
+			aux.Sacar(c.Elegir());
+			conjuntos.add(c);
+		}
+		
+		
+		while(conjuntos.size() > 1) 
+		{
+			AristaKruskal ak = aristas.get(0);
+			aristas.remove(0);
+			if(PertenecenADistintosConjuntos(ak.NodoOrigen, ak.NodoDestino, conjuntos)) 
+			{
+				kruskal.AgregarVertice(ak.NodoOrigen);
+				kruskal.AgregarVertice(ak.NodoDestino);
+				kruskal.AgregarArista(ak.NodoOrigen, ak.NodoDestino, ak.ValorArista);
+				
+				ArrayList<ConjuntoTDA> conjuntosAux = new ArrayList<ConjuntoTDA>();
+				conjuntos.forEach((n)->{
+					if(n.Pertenece(ak.NodoOrigen))
+						n.Agregar(ak.NodoDestino);
+						
+				});
+			}
+		}
+		
+		
+		return kruskal;
+	}
+	
+	public boolean PertenecenADistintosConjuntos(int a, int b, ArrayList<ConjuntoTDA> conjuntos)
+	{
+		return true;
+	}
+	
+	public ArrayList<AristaKruskal> GetAristasKruskal()
+	{
+		ArrayList<AristaKruskal> aristas = new ArrayList<AristaKruskal>();
+		
+		NodoGrafo aux = origen;
+		while (aux != null) {
+			NodoArista auxA = aux.arista;
+			while(auxA != null)
+			{
+				AristaKruskal ak = new AristaKruskal();
+				ak.ValorArista = auxA.etiqueta;
+				ak.NodoDestino = auxA.nodoDestino.nodo;
+				ak.NodoOrigen = aux.nodo;
+				aristas.add(ak);
+				auxA = auxA.sigArista;
+			}
+			aux = aux.sigNodo;
+		}
+		
+		return aristas;
+	}
 
+	public void mostrarMatriz() {
+		NodoGrafo aux = origen;
+		NodoArista arista;
+		while(aux != null) {
+		System.out.print(aux.nodo + "\t" );
+		arista = aux.arista;
+			while(arista != null) {
+				
+				System.out.print(arista.etiqueta + " "  + arista.nodoDestino.nodo +  "\t");
+				arista = arista.sigArista;
+			}
+			System.out.println();
+			aux = aux.sigNodo;
+		}
+	}
+	
 	public void ImprimirLindo(int origen) {
 		NodoGrafo _origen = Vert2Nodo(origen);// Encuentro el nodo para el valor origen
 		ArrayList<NodoArista> al = getAdyacentes(_origen);
@@ -161,7 +251,7 @@ public class GrafoLD implements GrafoTDA {
 		}
 		return c;
 	}
-
+	
 	/*
 	 * * Se elimina la arista que tiene como origen al ve´rtice v1 * y destino al
 	 * ve´rtice v2

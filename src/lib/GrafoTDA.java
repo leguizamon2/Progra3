@@ -13,4 +13,6 @@ public interface GrafoTDA {
 	void RecorrerDFS(int origen);
 	void RecorrerBFS(int origen);
 	void ImprimirLindo(int i);
+	void mostrarMatriz();
+	GrafoTDA Kruskal();
 }
