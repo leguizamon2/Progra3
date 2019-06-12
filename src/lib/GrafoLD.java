@@ -5,65 +5,80 @@ import java.util.*;
 public class GrafoLD implements GrafoTDA {
 	NodoGrafo origen;
 
-	public void RecorrerDFS(int origen) {
-		NodoGrafo _origen = Vert2Nodo(origen);//Encuentro el nodo para el valor origen
+	public void ImprimirLindo(int origen) {
+		NodoGrafo _origen = Vert2Nodo(origen);// Encuentro el nodo para el valor origen
+		ArrayList<NodoArista> al = getAdyacentes(_origen);
 		
-		ArrayList<NodoArista> al = new ArrayList<NodoArista>();//Creo una lista de arista donde voy a guardar todas las aristas del nodo _origen en este momento
-		NodoArista aux = new NodoArista();//Uso un nodo arista auxiliar para ir agregando las diferentes aristas a la lista
+		al.forEach((n) -> {
+			
+			System.out.println("O=" + _origen.nodo + "****" + n.etiqueta + "*****" + "D=" + n.nodoDestino.nodo);
+			// Para cada arista voy a ver si el nodo tiene adyacentes o no, si tiene llamo
+			// recursivamente al metodo
+			// pasandole como nodo origen el nodo destino de la arista que estoy manejando
+			if (_origen.arista != null) {
+				ImprimirLindo(n.nodoDestino.nodo);
+			}
+		});
+
+	}
+
+	public void RecorrerDFS(int origen) {
+		NodoGrafo _origen = Vert2Nodo(origen);// Encuentro el nodo para el valor origen
+
+		ArrayList<NodoArista> al = new ArrayList<NodoArista>();// Creo una lista de arista donde voy a guardar todas las
+																// aristas del nodo _origen en este momento
+		NodoArista aux = new NodoArista();// Uso un nodo arista auxiliar para ir agregando las diferentes aristas a la
+											// lista
 		aux = _origen.arista;
-		while(aux != null)//agrego las aristas
+		while (aux != null)// agrego las aristas
 		{
 			al.add(aux);
 			aux = aux.sigArista;
-		}	
+		}
 
-		al.forEach((n) -> {//Para cada arista voy a ver si el nodo tiene adyacentes o no, si tiene llamo recursivamente al metodo 
-							//pasandole como nodo origen el nodo destino de la arista que estoy manejando
-			if(_origen.arista != null)
-			{
+		al.forEach((n) -> {// Para cada arista voy a ver si el nodo tiene adyacentes o no, si tiene llamo
+							// recursivamente al metodo
+							// pasandole como nodo origen el nodo destino de la arista que estoy manejando
+			if (_origen.arista != null) {
 				RecorrerDFS(n.nodoDestino.nodo);
 			}
 		});
-	
+
 		System.out.println(_origen.nodo);
 	}
-	
-	
-	private ArrayList<NodoArista> getAdyacentes(NodoGrafo _origen)
-	{
-		ArrayList<NodoArista> al = new ArrayList<NodoArista>();//Creo una lista de arista donde voy a guardar todas las aristas del nodo _origen en este momento
-		NodoArista auxa = new NodoArista();//Uso un nodo arista auxiliar para ir agregando las diferentes aristas a la lista
+
+	private ArrayList<NodoArista> getAdyacentes(NodoGrafo _origen) {
+		ArrayList<NodoArista> al = new ArrayList<NodoArista>();// Creo una lista de arista donde voy a guardar todas las
+																// aristas del nodo _origen en este momento
+		NodoArista auxa = new NodoArista();// Uso un nodo arista auxiliar para ir agregando las diferentes aristas a la
+											// lista
 		auxa = _origen.arista;
-		while(auxa != null)//agrego las aristas
+		while (auxa != null)// agrego las aristas
 		{
 			al.add(auxa);
 			auxa = auxa.sigArista;
-		}	
-		
+		}
+
 		return al;
 	}
-	
-	public void RecorrerBFS(int origen) 
-	{
-		NodoGrafo _origen = Vert2Nodo(origen);//Encuentro el nodo para el valor origen		
+
+	public void RecorrerBFS(int origen) {
+		NodoGrafo _origen = Vert2Nodo(origen);// Encuentro el nodo para el valor origen
 
 		ColaTDA ngs = new ColaLD();
 		ngs.Acolar(_origen.nodo);
 
-		while(!ngs.ColaVacia())
-		{
+		while (!ngs.ColaVacia()) {
 			int auxint = ngs.Primero();
 			NodoGrafo aux = Vert2Nodo(auxint);
 			ngs.Desacolar();
 			getAdyacentes(aux).forEach((n) -> {
 				ngs.Acolar(n.nodoDestino.nodo);
-				
+
 			});
 			System.out.println(aux.nodo);
-		}	
+		}
 	}
-	
-	
 
 	public void InicializarGrafo() {
 		origen = null;

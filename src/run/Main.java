@@ -1,6 +1,8 @@
 package run;
 
 import java.time.Instant;
+import java.util.ArrayList;
+
 import lib.*;
 
 public class Main 
@@ -15,10 +17,42 @@ public class Main
 //		
 //		System.out.println(CuantasVecesMejor(a, 4, 6));
 //		
-		System.out.println(Ej3(3, 16));
-		System.out.println(Ej32(3, 16));
+		System.out.println();
+		Cambio(345);
 	}
 	
+	
+	public static void Cambio(int valor) 
+	{
+		int[] billetes = {100, 50, 20, 5};// Se ordena de mayor a menor usando algun algoritmo de los conocidos, porque la solucion requiere retornar el menor numero posible de billetes
+		
+		ArrayList<Integer> retorno = new ArrayList<Integer>();
+		int retornoTotal = 0;
+		int i = 0; //este es mi indice para ir dando distintos valores de billetes
+		
+		while(retornoTotal < valor)
+		{
+			if((retornoTotal + billetes[i]) > valor)
+				i++;
+			else
+			{
+				retornoTotal = retornoTotal + billetes[i];
+				retorno.add(billetes[i]);
+			}
+		}
+		
+		retorno.forEach((n)->{
+			System.out.println(n);
+		});
+	}
+	
+	public static int SumaN(int n)
+	{
+		if(n==1)
+			return n;
+		else
+			return n+SumaN(n-1);
+	}
 	
 	
 	public static int Ej3(int a, int n)

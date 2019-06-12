@@ -12,4 +12,5 @@ public interface GrafoTDA {
 	int PesoArista(int v, int vf);
 	void RecorrerDFS(int origen);
 	void RecorrerBFS(int origen);
+	void ImprimirLindo(int i);
 }
