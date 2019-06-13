@@ -16,17 +16,17 @@ public class GrafoLD implements GrafoTDA {
 			vertices.add(v);
 		}
 		
-		ArrayList<Integer> verticesRecorridos = new ArrayList<Integer>();
-		verticesRecorridos.add(origen.nodo);
+		ArrayList<Integer> verticesRecorridos = new ArrayList<Integer>();//guardo los vertices recorridos
+		verticesRecorridos.add(origen.nodo);//comienza solo con el nodo origen
 		
 		
-		while(vertices.size() != verticesRecorridos.size()) 
+		while(vertices.size() != verticesRecorridos.size()) //itero mientras que los vertices recorridos sean todos los vertices del grafo
 		{
-			NodoArista arista = GetMenorAdj(verticesRecorridos, vertices);
-			prim.AgregarVertice(arista.origen);
+			NodoArista arista = GetMenorAdj(verticesRecorridos, vertices);//metodo que va a devolver la menor arista entre el arreglo de vertices recorridos y la disyuncion entre todos los vertices y los ya recorridos
+			prim.AgregarVertice(arista.origen);//de la arista que encontramos, agregamos los nodos origen destino y la arista
 			prim.AgregarVertice(arista.nodoDestino.nodo);
 			prim.AgregarArista(arista.origen, arista.nodoDestino.nodo, arista.etiqueta);
-			verticesRecorridos.add(arista.nodoDestino.nodo);
+			verticesRecorridos.add(arista.nodoDestino.nodo);//agrego al vertice recorrido el nodo destino
 		}
 		
 		return prim;
@@ -37,7 +37,7 @@ public class GrafoLD implements GrafoTDA {
 		ArrayList<Integer> auxD = new ArrayList<Integer>();
 		destinos.forEach((n)->{
 			auxD.add(n);
-		});
+		});//guardo en un arreglo auxiliar los valores del array destinos, que en principio son todos los vertices
 		
 		for(int i=0; i< s.size(); i++)
 		{
@@ -90,35 +90,35 @@ public class GrafoLD implements GrafoTDA {
 		}
 		
 		
-		while(conjuntos.size() > 1) 
+		while(conjuntos.size() > 1) //mientras que mi arreglo de conjuntos tenga mas de un valora voya  ir iterando. Luego voy a juntar valores para terminar teniendo uno solo
 		{
-			AristaKruskal ak = aristas.get(0);
+			AristaKruskal ak = aristas.get(0);//de la lista de aristas que esta ordenada agarro la primera, la menor
 			aristas.remove(0);
-			if(PertenecenADistintosConjuntos(ak.NodoOrigen, ak.NodoDestino, conjuntos)) 
+			if(PertenecenADistintosConjuntos(ak.NodoOrigen, ak.NodoDestino, conjuntos))//Si los nodos origen y destino de esta arista perteneces a conjuntos distintos 
 			{
 				kruskal.AgregarVertice(ak.NodoOrigen);
 				kruskal.AgregarVertice(ak.NodoDestino);
-				kruskal.AgregarArista(ak.NodoOrigen, ak.NodoDestino, ak.ValorArista);
+				kruskal.AgregarArista(ak.NodoOrigen, ak.NodoDestino, ak.ValorArista);//Agrego al grafo de retono los vertices y la arista de este momento
 				
-				ArrayList<ConjuntoTDA> conjuntosAux = new ArrayList<ConjuntoTDA>();
+				ArrayList<ConjuntoTDA> conjuntosAux = new ArrayList<ConjuntoTDA>();//creo un conjunto auxiliar que voy a agregar el merge de los conjuntos donde participan los nodos y los que no participaron
 				
 				ConjuntoTDA aux1 = new ConjuntoLD();
 				ConjuntoTDA aux2 = new ConjuntoLD();
 								
 				for (ConjuntoTDA conjuntoTDA : conjuntos)//Recorro el conjunto para mergear el origen y destino y dejar afuera el destino 
 				{
-					if(conjuntoTDA.Pertenece(ak.NodoOrigen))
+					if(conjuntoTDA.Pertenece(ak.NodoOrigen))//agarro el conjuntoq ue tiene al nodo origen y lo guardo como auxiliar
 					{
 						aux1 = conjuntoTDA;					
 					}
 					else
-					if(conjuntoTDA.Pertenece(ak.NodoDestino))
+					if(conjuntoTDA.Pertenece(ak.NodoDestino))//agarro el conjunto que tiene al nodo destino
 					{
 						aux2 = conjuntoTDA;
 					}
 					else
 					{
-						conjuntosAux.add(conjuntoTDA);	
+						conjuntosAux.add(conjuntoTDA);	//si no participaron los nodos los agrego al conjunto auxiliar
 					}
 				}
 				
@@ -127,9 +127,9 @@ public class GrafoLD implements GrafoTDA {
 					int e = aux1.Elegir();
 					aux2.Agregar(e);
 					aux1.Sacar(e);
-				}
-				conjuntosAux.add(aux2);
-				conjuntos = conjuntosAux;
+				}//hago el merge de un conjunto donde participaron lso nodos, al otro
+				conjuntosAux.add(aux2);//lo agrego al conjunto auxiliar
+				conjuntos = conjuntosAux;//seteo el conjunto sobre el que eestoy iterando como el conuunto auzixliar que tiene el merge
 			}
 		}
 		
