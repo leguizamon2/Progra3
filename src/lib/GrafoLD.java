@@ -45,19 +45,19 @@ public class GrafoLD implements GrafoTDA {
 			{
 				auxD.remove(s.get(i));
 			}
-		}
+		}//hago la disyuncion entre el arreglo destinos y el arreglo s, que son los vertices ya recorridos
 	
-		//ahora destinos es lla disyuncion con S
+		//ahora auxD es destinos con la disyuncion con S
 		
 		//Me traigo todas las aristas con origen en S y destino en Destinos-S
-		ArrayList<NodoArista> aristas = new ArrayList<NodoArista>();
+		ArrayList<NodoArista> aristas = new ArrayList<NodoArista>();//creo un arreglo de aristas
 		for(int i=0; i< s.size(); i++)
 		{
-			NodoGrafo aux = Vert2Nodo(s.get(i));
+			NodoGrafo aux = Vert2Nodo(s.get(i));//agarro el primer vertice ya recorrido para buscar sus aristas
 			NodoArista auxa = aux.arista;
 			while (auxa != null) 
-			{
-				if(auxD.contains(auxa.nodoDestino.nodo))
+			{//recorro las aristas
+				if(auxD.contains(auxa.nodoDestino.nodo))//si la arista del primer nodo origen que estoy evaluando, tiene como destino uno de los nodos destinos (disyuncion) la agrego al arreglo 
 				{
 					auxa.origen = aux.nodo;
 					aristas.add(auxa);
@@ -67,8 +67,8 @@ public class GrafoLD implements GrafoTDA {
 			}
 		}
 
-		Collections.sort(aristas);
-		return aristas.get(0);
+		Collections.sort(aristas);// Ya tengo todas las aristas con origgen en vertices origen y destinos en la disyuncion
+		return aristas.get(0);//devuelvo la menor arista.
 	}
 	
 	public GrafoTDA Kruskal() 
