@@ -15,4 +15,5 @@ public interface GrafoTDA {
 	void ImprimirLindo(int i);
 	void mostrarMatriz();
 	GrafoTDA Kruskal();
+	GrafoTDA Prim();
 }

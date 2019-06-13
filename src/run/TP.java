@@ -33,16 +33,47 @@ public class TP {
 		grafo2.AgregarVertice(6);
 		
 		grafo2.AgregarArista(1, 2, 6);
+		grafo2.AgregarArista(2, 1, 6);
+		
 		grafo2.AgregarArista(1, 3, 1);
+		grafo2.AgregarArista(3, 1, 1);
+		
+		
 		grafo2.AgregarArista(1, 4, 5);
+		grafo2.AgregarArista(4, 1, 5);
+		
+		
 		grafo2.AgregarArista(2, 3, 5);
+		grafo2.AgregarArista(3, 2, 5);
+		
+		
 		grafo2.AgregarArista(4, 3, 5);
+		grafo2.AgregarArista(3, 4, 5);
+		
+		
 		grafo2.AgregarArista(2, 5, 3);
+		grafo2.AgregarArista(5, 2, 3);
+		
+		
 		grafo2.AgregarArista(4, 6, 2);
+		grafo2.AgregarArista(6, 4, 2);
+		
+		
 		grafo2.AgregarArista(5, 6, 6);
+		grafo2.AgregarArista(6, 5, 6);
+		
+		
 		grafo2.AgregarArista(5, 3, 6);
+		grafo2.AgregarArista(3, 5, 6);
+		
+		
 		grafo2.AgregarArista(6, 3, 4);
+		grafo2.AgregarArista(3, 6, 4);
 	
-		grafo2.Kruskal().mostrarMatriz();
+		
+		
+		grafo2.Prim().ImprimirLindo(1);
+		System.out.println("KURSKAL");
+		grafo2.Kruskal().ImprimirLindo(1);
 	}
 }

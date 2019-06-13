@@ -5,17 +5,78 @@ import java.util.*;
 public class GrafoLD implements GrafoTDA {
 	NodoGrafo origen;
 	
+	public GrafoTDA Prim() {
+		GrafoTDA prim = new GrafoLD();//Creo el grafo que se va a retornar
+		ArrayList<Integer> vertices = new ArrayList<Integer>();
+		ConjuntoTDA aux = Vertices();//Aca agarro todos los vertices
+		while (!aux.ConjuntoVacio())//voy iterando todos los vertices para meterlos en un array
+		{
+			int v = aux.Elegir();
+			aux.Sacar(v);
+			vertices.add(v);
+		}
+		
+		ArrayList<Integer> verticesRecorridos = new ArrayList<Integer>();
+		verticesRecorridos.add(origen.nodo);
+		
+		
+		while(vertices.size() != verticesRecorridos.size()) 
+		{
+			NodoArista arista = GetMenorAdj(verticesRecorridos, vertices);
+			prim.AgregarVertice(arista.origen);
+			prim.AgregarVertice(arista.nodoDestino.nodo);
+			prim.AgregarArista(arista.origen, arista.nodoDestino.nodo, arista.etiqueta);
+			verticesRecorridos.add(arista.nodoDestino.nodo);
+		}
+		
+		return prim;
+	}
+
+	public NodoArista GetMenorAdj(ArrayList<Integer> s, ArrayList<Integer> destinos)
+	{
+		ArrayList<Integer> auxD = new ArrayList<Integer>();
+		destinos.forEach((n)->{
+			auxD.add(n);
+		});
+		
+		for(int i=0; i< s.size(); i++)
+		{
+			if(auxD.contains(s.get(i)))
+			{
+				auxD.remove(s.get(i));
+			}
+		}
+	
+		//ahora destinos es lla disyuncion con S
+		
+		//Me traigo todas las aristas con origen en S y destino en Destinos-S
+		ArrayList<NodoArista> aristas = new ArrayList<NodoArista>();
+		for(int i=0; i< s.size(); i++)
+		{
+			NodoGrafo aux = Vert2Nodo(s.get(i));
+			NodoArista auxa = aux.arista;
+			while (auxa != null) 
+			{
+				if(auxD.contains(auxa.nodoDestino.nodo))
+				{
+					auxa.origen = aux.nodo;
+					aristas.add(auxa);
+				}
+					
+				auxa = auxa.sigArista;
+			}
+		}
+
+		Collections.sort(aristas);
+		return aristas.get(0);
+	}
+	
 	public GrafoTDA Kruskal() 
 	{
 		GrafoTDA kruskal = new GrafoLD();//Creo el grafo que se va a retornar
 		ArrayList<AristaKruskal> aristas = GetAristasKruskal();//Traigo la lista de aristas totales del grafo
 		Collections.sort(aristas);//Ordeno las aristas de menor a mayor.
-		
-//		aristas.forEach((n) ->{
-//			System.out.println(n.NodoOrigen + ", " + n.ValorArista + ", " + n.NodoDestino);
-//		});
-		
-		
+				
 		ArrayList<ConjuntoTDA> conjuntos = new ArrayList<ConjuntoTDA>();// Este array list va a ser mi lista de conuntos
 		//Inicialmente se va a cargar con un nuevo conjunto por cada vertice, que contenga solo un vertice
 		ConjuntoTDA aux = Vertices();//Aca agarro todos los vertices
@@ -28,7 +89,7 @@ public class GrafoLD implements GrafoTDA {
 			conjuntos.add(c);
 		}
 		
-		int i = 0;
+		
 		while(conjuntos.size() > 1) 
 		{
 			AristaKruskal ak = aristas.get(0);
@@ -70,8 +131,6 @@ public class GrafoLD implements GrafoTDA {
 				conjuntosAux.add(aux2);
 				conjuntos = conjuntosAux;
 			}
-			
-			i++;
 		}
 		
 		
@@ -129,21 +188,17 @@ public class GrafoLD implements GrafoTDA {
 		}
 	}
 	
-	public void ImprimirLindo(int origen) {
-		NodoGrafo _origen = Vert2Nodo(origen);// Encuentro el nodo para el valor origen
-		ArrayList<NodoArista> al = getAdyacentes(_origen);
-		
-		al.forEach((n) -> {
-			
-			System.out.println("O=" + _origen.nodo + "****" + n.etiqueta + "*****" + "D=" + n.nodoDestino.nodo);
-			// Para cada arista voy a ver si el nodo tiene adyacentes o no, si tiene llamo
-			// recursivamente al metodo
-			// pasandole como nodo origen el nodo destino de la arista que estoy manejando
-			if (_origen.arista != null) {
-				ImprimirLindo(n.nodoDestino.nodo);
+	public void ImprimirLindo(int origen1) {
+		NodoGrafo aux = origen;
+		while (aux != null) {
+			NodoArista auxA = aux.arista;
+			while(auxA != null)
+			{
+				System.out.println("Origen: " + aux.nodo + ", Destino: " + auxA.nodoDestino.nodo + ", Arista: " + auxA.etiqueta);
+				auxA = auxA.sigArista;
 			}
-		});
-
+			aux = aux.sigNodo;
+		}
 	}
 
 	public void RecorrerDFS(int origen) {
